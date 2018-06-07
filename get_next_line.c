@@ -65,23 +65,25 @@ t_getlist	*ft_worklist(t_getlist *head, int fd)
 
 int		ft_crazy(char *buffe, int fd)
 {
-	t_getlist *head;
+	static t_getlist *head;
 	int i = -1;
 	char *line;
 
 	line = NULL;
 	head = NULL;
 	head = ft_worklist(head, fd);
-	line = ft_strjoinfree(head->content, buffe);
-	printf("%s\n",line);
+	head->content = ft_strjoinfree(head->content, buffe);
+	printf("---------------\n");
+	printf("%s\n",head->content);
+	printf("---------------\n");
 	printf("CYKA WORKS\n");
 	while (head->content[++i] != '\0')
 	{
 		
 		if(head->content[i] == '\n')
 		{
-			printf("CRAZY: %s\n",head->content);
-			return (0);
+			printf("CRAZY: %s\n\n",head->content);
+			return (1);
 		}
 	}
 	return (1);
