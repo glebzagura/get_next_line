@@ -19,6 +19,11 @@
 int		main(int argc, char const *argv[])
 {
 	int fd;
+	char lol[] = "lol\ntu dibil";
+	char *lol1;
+
+	lol1 = ft_strrchr(lol, '\n');
+	printf("!!!!! ____>   %s\n",lol1 );
 	fd = open("text.txt", O_RDONLY);
 	get_next_line(fd,NULL);
 	return 0;
