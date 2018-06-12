@@ -19,75 +19,93 @@
 int		main(int argc, char const *argv[])
 {
 	int fd1;
+	int fd2;
 	char *line;
 
-	fd1 = open("text", O_RDONLY);
+	fd1 = open("test", O_RDONLY);
+	fd2 = open("text", O_RDONLY);
 	get_next_line(fd1, &line);
+	free(line);
+	printf("after gnl = %s\n", line);
+	get_next_line(fd2, &line);
+	free(line);
 	printf("after gnl = %s\n", line);
 	get_next_line(fd1, &line);
 	printf("after gnl = %s\n", line);
-	return 0;
-}
-char	*ft_strjoinfree(char *s1, char *s2)
-{
-	char *string;
+	get_next_line(fd2, &line);
+	free(line);
+	printf("after gnl = %s\n", line);
 
-	string = NULL;
-	string = (char *)malloc(sizeof(char) * (ft_strlen(s1) +
-											ft_strlen(s2) + 1));
-	if (!string)
-		return (NULL);
-	ft_strcpy(string, s1);
-	ft_strcpy(string + ft_strlen(s1), s2);
-	return (string);
+	return (0);
+	
 }
 
-t_getlist	*ft_newlist(t_getlist *head, int fd)
+t_getlist	*ft_newlist(int fd)
 {
-	head = (t_getlist*)malloc(sizeof(t_getlist));
-	head->next = NULL;
-	head->content = (char*)malloc(sizeof(1));
-	ft_bzero(head->content, 2);
-	head->num_fd = fd;
-	return (head);
+	t_getlist	*new;
+
+	//printf("\n\n\nprivet\n");
+	new = (t_getlist*)malloc(sizeof(t_getlist));
+	new->next = NULL;
+	new->content = (char*)malloc(sizeof(1));
+	ft_bzero(new->content, 2);
+	new->num_fd = fd;
+	//printf("FD =%d\n", head->num_fd);
+	return (new);
 }
+
 t_getlist	*ft_worklist(t_getlist *head, int fd)
 {
 	if (head == NULL)
 	{
-		head = ft_newlist(head, fd);
+		head = ft_newlist(fd);
 		return (head);
 	}
-	while (head)
+	while (head != NULL)
 	{
 		if(head->num_fd == fd)
 			return (head);
-		head = head->next;
+		else if (head->next)
+			head = head->next;
+		else
+			break ;
 	}
+	//printf("11111111\n");
+	head->next = ft_newlist(fd);
 	return (head);
 }
 
 int		ft_crazy(char *buffe, int fd, char **line)
 {
-	static t_getlist *head = NULL;
+	static t_getlist *tmp = NULL;
+	t_getlist *head;
 	int i = -1;
+	char	*suka;
 
 	*line = NULL;
-	head = ft_worklist(head, fd);
-	head->content = ft_strjoinfree(head->content, buffe);
-	printf("-------FULL--------\n");
-	printf("%s\n",head->content);
-	printf("---------------\n");
+	if (!tmp)
+	{
+		tmp = ft_worklist(tmp, fd);
+		head = tmp;
+		//printf("11111\n");
+	}
+	else
+	{
+		head = ft_worklist(tmp, fd);
+	}
+	suka = ft_strjoin(head->content, buffe);
+	free(head->content);
+	head->content = ft_strdup(suka);
+	//printf("head->content =%s\n",head->content );
 	while (head->content[++i] != '\0')
 	{
 		
 		if(head->content[i] == '\n')
 		{
 			*line = ft_strsub(head->content, 0, i);
-			printf("len = %d\n", (int)ft_strlen(head->content));
-			printf("head->content = %s\n", head->content + i + 1);
-			head->content = ft_strsub(head->content + i + 1, 0, ft_strlen(head->content + i + 1));
-			printf("CCContent = %s\n\n",head->content);
+			suka = ft_strdup(head->content + i + 1);
+			free(head->content);
+			head->content = ft_strdup(suka);
 			return (1);
 		}
 	}
@@ -99,13 +117,16 @@ int		get_next_line(const int fd, char **line)
 	int		bytes = 1;
 	char	buffe[BUFF_SIZE + 1];
 
+	if (!line)
+		return (-1);
 	while (bytes > 0)
 	{
 		bytes = read(fd, buffe, BUFF_SIZE);
+		if (bytes < 0)
+			return(-1);
 		if (ft_crazy(buffe, fd, line) == 1)
 		{
-			printf("line =  %s\n", *line);
-			return (0);
+			return (1);
 		}
 	}
 	return (0);
