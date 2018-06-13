@@ -13,11 +13,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8b6f9de6-5f59-493b-afbb-5296851c9e75" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/get_next_line.dir/get_next_line.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/get_next_line.dir/get_next_line.c.o" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/get_next_line" afterPath="$PROJECT_DIR$/cmake-build-debug/get_next_line" />
       <change beforePath="$PROJECT_DIR$/get_next_line.c" afterPath="$PROJECT_DIR$/get_next_line.c" />
-      <change beforePath="$PROJECT_DIR$/get_next_line.h" afterPath="$PROJECT_DIR$/get_next_line.h" />
-      <change beforePath="$PROJECT_DIR$/libft/libft.a" afterPath="$PROJECT_DIR$/libft/libft.a" />
+      <change beforePath="$PROJECT_DIR$/gnl7_1.txt" afterPath="$PROJECT_DIR$/gnl7_1.txt" />
       <change beforePath="$PROJECT_DIR$/lox" afterPath="$PROJECT_DIR$/lox" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -34,8 +31,8 @@
       <file leaf-file-name="get_next_line.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/get_next_line.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1047">
-              <caret line="121" column="0" lean-forward="false" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+            <state relative-caret-position="1152">
+              <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
               <folding>
                 <element signature="e#892#918#0" expanded="true" />
               </folding>
@@ -217,12 +214,12 @@
       <workItem from="1528465960319" duration="1040000" />
       <workItem from="1528716252831" duration="1751000" />
       <workItem from="1528890630192" duration="1028000" />
-      <workItem from="1528896023253" duration="293000" />
+      <workItem from="1528896023253" duration="425000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6933000" />
+    <option name="totallyTimeSpent" value="7065000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
@@ -259,7 +256,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/get_next_line.c</url>
-          <line>116</line>
+          <line>120</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
@@ -532,8 +529,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/get_next_line.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1047">
-          <caret line="121" column="0" lean-forward="false" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+        <state relative-caret-position="1152">
+          <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
           <folding>
             <element signature="e#892#918#0" expanded="true" />
           </folding>

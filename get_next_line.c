@@ -16,7 +16,34 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+int				main(void)
+{
+	char		*line;
+	int			fd;
+	int			ret;
+	int			count_lines;
+	char		*filename;
+	int			errors;
 
+	filename = "gnl7_1.txt";
+	fd = open(filename, O_RDONLY);
+	line = NULL;
+	ret = 0;
+	
+	char	*lolo;
+
+	lolo = "taras molodec\ngleb toje molodec";
+	printf("%s\n",ft_strchr(lolo, '\n'));
+
+	// count_lines = 0;
+	// while ((ret = get_next_line(fd, &line)) > 0)
+	// {
+	// 	count_lines++;
+	// 	printf("%s\n",line);
+	// }
+	// printf("count_lines = %d\n", count_lines);
+	return (0);
+}
 
 t_getlist	*ft_newlist(int fd)
 {
@@ -69,11 +96,13 @@ int		ft_crazy(char *buffe, int fd, char **line)
 	*line = ft_strjoin(head->content, buffe);
 	free(head->content);
 	head->content = ft_strdup(*line);
-	free(*line);
+	//printf("%s\n",*line);
+	//free(*line);
 	while (head->content[++i] != '\0')
 	{
 		if(head->content[i] == '\n')
 		{
+			// printf("11\n");
 			// printf("head->content = %s\nsuka = %s\nhead->content[i] = %c\n", head->content, suka, head->content[i]);
 			*line = ft_strsub(head->content, 0, i);
 			//printf("line = %s\n", *line);
@@ -87,6 +116,7 @@ int		ft_crazy(char *buffe, int fd, char **line)
 			return (1);
 		}
 	}
+	
 	return (0);
 }
 
