@@ -45,6 +45,7 @@ int				main(void)
 	return (0);
 }
 
+
 t_getlist	*ft_newlist(int fd)
 {
 	t_getlist	*new;
@@ -76,65 +77,47 @@ t_getlist	*ft_worklist(t_getlist *head, int fd)
 	return (head->next);
 }
 
-int		ft_crazy(char *buffe, int fd, char **line)
+int		ft_crazy(char *buffe, int fd, char **line, int bytes)
 {
 	static t_getlist *tmp = NULL;
 	t_getlist *head;
-	//int i = -1;
-	//char	*suka;
+	char *suka;
 
-	// *line = NULL;
+	*line = NULL;
 	if (!tmp)
 	{
 		tmp = ft_worklist(tmp, fd);
 		head = tmp;
 	}
 	else
-	{
 		head = ft_worklist(tmp, fd);
-	}
 	*line = ft_strjoin(head->content, buffe);
 	free(head->content);
-	ft_bzero(head->content, ft_strlen(head->content));
+	//ft_bzero(head->content, ft_strlen(head->content));
 	head->content = ft_strdup(*line);
-	//printf("%s\n",*line);
 	free(*line);
-	if (ft_strchr(head->content, '\n')) {
-        *line = ft_strsub(head->content, 0, ((int) ft_strchr(head->content, '\n') - (int) head->content));
-        ft_bzero(head->content, ((int) ft_strchr(head->content, '\n') - (int) head->content));
-        //printf("%s\n", *line );
+	if (ft_strchr(head->content, '\n')) 
+	{
+        *line = ft_strsub(head->content, 0, (int)(ft_strchr(head->content, '\n') - head->content));
+        suka = ft_strdup(ft_strchr(head->content, '\n') + 1);
+        ft_bzero(head->content, ft_strlen(head->content));
+        head->content = ft_strdup(suka);
+        // printf("suka = %s\n",suka );
+        //printf("!---! %s\n?---?\n", suka);
         return (1);
     }
-    if (buffe[0] == '\0')
+    if (bytes == 0 && ft_strchr(head->content, '\0'))
     {
-
+    	*line = ft_strsub(head->content, 0, (int)(ft_strchr(head->content, '\0') - head->content));
+        suka = ft_strdup(ft_strchr(head->content, '\n') + 1);
+        ft_bzero(head->content, ft_strlen(head->content));
+        head->content = ft_strdup(suka);
     }
+    // if (ft_strchr(head->content, '\n') )
+    // {
+    // 	/* code */
+    // }
 	return (0);
-
-
-
-
-
-	// while (head->content[++i] != '\0')
-	// {
-	// 	if(head->content[i] == '\n')
-	// 	{
-	// 		// printf("11\n");
-	// 		// printf("head->content = %s\nsuka = %s\nhead->content[i] = %c\n", head->content, suka, head->content[i]);
-	// 		*line = ft_strsub(head->content, 0, i);
-	// 		//printf("line = %s\n", *line);
-	// 		head->content = ft_strdup(head->content + i + 1);
-
-			
-	// 		// free(head->content);
-	// 		// head->content = ft_strdup(suka);
-			
-	// 		// free(suka);
-	// 		return (1);
-	// 	}
-	// }
-	
-	// return (0);
 }
 
 int		get_next_line(const int fd, char **line)
@@ -147,24 +130,18 @@ int		get_next_line(const int fd, char **line)
 
 	if (!line)
 		return (-1);
-	while ((bytes = read(fd, buffe, BUFF_SIZE)))
+	while ((bytes = read(fd, buffe, BUFF_SIZE)) > -1)
 	{
-		
-		if (bytes < 0)
-			return(-1);
-        if (buffe[0] == '\0')
-            return (0);
-		if (ft_crazy(buffe, fd, line) == 1)
+		while (ft_crazy(buffe, fd, line, bytes) != 0)
 		{
 			return (1);
 		}
-        re = 0;
+		if (bytes == 0)
+			return(0);
+        if (bytes < 0)
+            return (-1);
+        return (0);
 	}
-    if (bytes == 0 && re == 0)
-    {
-        re = 1;
-        return (1);
-    }
 	return (0);
 }
 
