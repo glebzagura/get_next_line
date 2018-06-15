@@ -18,17 +18,15 @@ int				main(void)
 	line = NULL;
 	ret = 0;
 	
-	//char	*lolo;
-
-	//lolo = "taras molodec\ngleb toje molodec";
-	//printf("%s\n",ft_strchr(lolo, '\n'));
-
 	count_lines = 0;
-	while ((ret = get_next_line(fd, &line)) > 0)
-	{
-		count_lines++;
-		printf("%s\n",line);
-	}
-	printf("count_lines = %d\n", count_lines);
+	get_next_line(fd, &line);
+	printf("%s\n",line);
+	free(line);
+	get_next_line(fd, &line);
+	printf("%s\n",line);
+	free(line);
+	get_next_line(fd, &line);
+	printf("%s\n",line);
+	free(line);
 	return (0);
 }

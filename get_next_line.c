@@ -11,40 +11,9 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-
-int				main(void)
-{
-	char		*line;
-	int			fd;
-	int			ret;
-	int			count_lines;
-	char		*filename;
-	int			errors;
-
-	filename = "gnl7_1.txt";
-	fd = open(filename, O_RDONLY);
-	line = NULL;
-	ret = 0;
-	
-	//char	*lolo;
-
-	//lolo = "taras molodec\ngleb toje molodec";
-	//printf("%s\n",ft_strchr(lolo, '\n'));
-
-	count_lines = 0;
-	while ((ret = get_next_line(fd, &line)) > 0)
-	{
-		count_lines++;
-		printf("%s\n",line);
-	}
-	printf("count_lines = %d\n", count_lines);
-	return (0);
-}
-
 
 t_getlist	*ft_newlist(int fd)
 {
@@ -93,55 +62,49 @@ int		ft_crazy(char *buffe, int fd, char **line, int bytes)
 		head = ft_worklist(tmp, fd);
 	*line = ft_strjoin(head->content, buffe);
 	free(head->content);
-	//ft_bzero(head->content, ft_strlen(head->content));
 	head->content = ft_strdup(*line);
 	free(*line);
-	if (ft_strchr(head->content, '\n')) 
+	if (ft_strchr(head->content, '\n'))
 	{
-        *line = ft_strsub(head->content, 0, (int)(ft_strchr(head->content, '\n') - head->content));
-        suka = ft_strdup(ft_strchr(head->content, '\n') + 1);
-        ft_bzero(head->content, ft_strlen(head->content));
-        head->content = ft_strdup(suka);
-        // printf("suka = %s\n",suka );
-        //printf("!---! %s\n?---?\n", suka);
-        return (1);
-    }
-    if (bytes == 0 && ft_strchr(head->content, '\0'))
-    {
-    	*line = ft_strsub(head->content, 0, (int)(ft_strchr(head->content, '\0') - head->content));
-        suka = ft_strdup(ft_strchr(head->content, '\n') + 1);
-        ft_bzero(head->content, ft_strlen(head->content));
-        head->content = ft_strdup(suka);
-    }
-    // if (ft_strchr(head->content, '\n') )
-    // {
-    // 	/* code */
-    // }
+		*line = ft_strsub(head->content, 0, (int)(ft_strchr(head->content, '\n') - head->content));
+		suka = ft_strdup(ft_strchr(head->content, '\n') + 1);
+		free(head->content);
+		head->content = ft_strdup(suka);
+		free(suka);
+		return (1);
+	}
+	if (head->content[0] != '\0' && bytes < BUFF_SIZE)
+	{
+		*line = ft_strdup(head->content);
+		ft_bzero(head->content, ft_strlen(head->content));
+		return (1);
+	}
+	if (head->content[0] != '\0')
+		return (-1);
 	return (0);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	int		bytes = 1;
-    int     re = 1;
+	int		bytes;
+    int     re;
 	char	buffe[BUFF_SIZE + 1];
 
 	buffe[BUFF_SIZE] = '\0';
-
-	if (!line)
+	if (!line || fd < 0 || read(fd, 0, 0) == -1)
 		return (-1);
-	while ((bytes = read(fd, buffe, BUFF_SIZE)) > -1)
+	while ((bytes = read(fd, buffe, BUFF_SIZE)) > -2)
 	{
-		while (ft_crazy(buffe, fd, line, bytes) != 0)
+		if (bytes == -1)
+			return (-1);
+		if (bytes < BUFF_SIZE)
+			ft_bzero((void **) (buffe + bytes), BUFF_SIZE - bytes);
+		while ((re = ft_crazy(buffe, fd, line, bytes)) > -2)
 		{
-			return (1);
+			if (re == -1)
+				break;
+			return (re);
 		}
-		if (bytes == 0)
-			return(0);
-        if (bytes < 0)
-            return (-1);
-        return (0);
 	}
 	return (0);
 }
-
